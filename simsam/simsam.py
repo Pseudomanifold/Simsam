@@ -54,7 +54,8 @@ def kraemer_sampling(n, N=1, full_support=True):
         Number of points to sample.
     full_support : bool
         If set, only provides distributions with full support, i.e. with
-        non-zero values only.
+        non-zero values only. Typically, this parameter does not have to
+        be changed---the differences are minuscule.
 
     Returns
     -------
@@ -64,7 +65,11 @@ def kraemer_sampling(n, N=1, full_support=True):
     .. [1] Noah A. Smith and Roy W. Tromble, "Sampling Uniformly from
     the Unit Simplex," 2004.
     """
-    M = sys.maxsize
+    if full_support:
+        M = sys.maxsize - n
+    else:
+        M = sys.maxsize
+
     P = []
 
     for _ in range(N):
@@ -76,16 +81,15 @@ def kraemer_sampling(n, N=1, full_support=True):
         X = [0] + X + [M]
         Y = np.diff(X)
 
-        # Store one of the generated samples, which is now guaranteed to
-        # lie on the unit simplex by construction.
-        P.append(np.asarray(Y) / M)
+        if full_support:
+            P.append(np.asarray(Y) / M)
+        # Need to perform additional normalisation to ensure that zeroes
+        # are allowed.
+        else:
+            Y = np.asarray(Y, dtype=float)
+            Y = (Y / M) * Y - 1.0
+            Y /= (sys.maxsize - n)
+
+            P.append(Y)
 
     return np.asarray(P)
-
-
-# HIC SVNT DRACONES
-
-P = naive_sampling(3, 20000)
-
-for x, y, _ in P:
-    print(x, y)
