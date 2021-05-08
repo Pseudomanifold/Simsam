@@ -1,8 +1,10 @@
 [tool.poetry]
 name = "Simsam"
-version = "0.1.0"
+version = "0.1.1"
 description = "Simplex sampling algorithm"
 authors = ["Bastian Rieck <bastian@rieck.me>"]
+repository = "https://github.com/Pseudomanifold/Simsam"
+include = ["README.md"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
