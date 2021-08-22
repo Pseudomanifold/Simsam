@@ -78,7 +78,7 @@ def kraemer_sampling(n, N=1, full_support=True):
         X = [0] + X + [M]
         Y = np.diff(X)
 
-        if not full_support:
+        if full_support:
             P.append(np.asarray(Y) / M)
         # Need to perform additional normalisation to ensure that zeroes
         # are allowed.
