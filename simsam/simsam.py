@@ -65,10 +65,7 @@ def kraemer_sampling(n, N=1, full_support=True):
     .. [1] Noah A. Smith and Roy W. Tromble, "Sampling Uniformly from
     the Unit Simplex," 2004.
     """
-    if full_support:
-        M = sys.maxsize - n
-    else:
-        M = sys.maxsize
+    M = sys.maxsize
 
     P = []
 
@@ -76,20 +73,18 @@ def kraemer_sampling(n, N=1, full_support=True):
 
         rng = np.random.default_rng()
 
-        X = rng.choice(M - 1, replace=False, size=n - 1)
+        X = rng.choice(M - 1, replace=False, size=n - 1) + 1
         X = sorted(X)
         X = [0] + X + [M]
         Y = np.diff(X)
 
-        if full_support:
+        if not full_support:
             P.append(np.asarray(Y) / M)
         # Need to perform additional normalisation to ensure that zeroes
         # are allowed.
         else:
             Y = np.asarray(Y, dtype=float)
-            Y = (Y / M) * Y - 1.0
-            Y /= (sys.maxsize - n)
-
+            Y = (Y - 1) / (M - n)
             P.append(Y)
 
     return np.asarray(P)
