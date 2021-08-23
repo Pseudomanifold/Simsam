@@ -1,5 +1,7 @@
 # `Simsam`: Simplex Sampling Methods
 
+![PyPI - License](https://img.shields.io/pypi/l/simsam) ![PyPI](https://img.shields.io/pypi/v/simsam)
+
 This small package implements methods for sampling from a unit simplex,
 a problem that often crops up in a data analysis context.
 
